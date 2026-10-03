@@ -478,7 +478,7 @@
                     <div class="checklist">
                         <article class="check-item reveal"><div class="check-number">01</div><div><h3>PROPÓSITO</h3><p>Qué problema resuelve y para quién.</p></div></article>
                         <article class="check-item reveal"><div class="check-number">02</div><div><h3>REQUISITOS</h3><p>Runtime, versiones y dependencias del sistema.</p></div></article>
-                        <article class="check-item reveal"><div class="check-number">03</div><div><h3>INSTALACIÓN</h3><p>Comandos exactos para preparar el entorno.</p></div></article>
+                        <article class="check-item reveal"><div class="check-number">03</div><div><h3>INSTALACIÓN</h3><p>Comandos exactos para preparar el entorno con uv.</p></div></article>
                         <article class="check-item reveal"><div class="check-number">04</div><div><h3>EJECUCIÓN</h3><p>Ejemplos de CLI con sus parámetros.</p></div></article>
                         <article class="check-item reveal"><div class="check-number">05</div><div><h3>ESTRUCTURA</h3><p>Mapa breve de carpetas y módulos.</p></div></article>
                         <article class="check-item reveal"><div class="check-number">06</div><div><h3>LICENCIA</h3><p>Permisos de uso, distribución y autoría.</p></div></article>
@@ -490,18 +490,18 @@
             <!-- Speaker notes: Explicar la ecuación como la defensa contra "en mi máquina sí funcionaba". -->
             <section class="slide repro">
                 <div class="repro-head"><div><div class="eyebrow reveal">06 / CALIDAD E INGENIERÍA</div><h2 class="section-title reveal">REPRODUCIBILIDAD:<br>EL MISMO CÓDIGO, EL MISMO RESULTADO</h2></div><div class="big-number reveal">03</div></div>
-                <div class="equation reveal">CÓDIGO VERSIONADO + ENTORNO DETERMINISTA = RESULTADOS IDÉNTICOS<small>La meta: eliminar “en mi máquina sí funcionaba”.</small></div>
+                <div class="equation reveal">CÓDIGO VERSIONADO + ENTORNO DESCRITO = MISMO RESULTADO<small>La meta: eliminar “en mi máquina sí funcionaba”.</small></div>
                 <div class="repro-grid">
-                    <article class="repro-card reveal"><div class="label">01 / DEPENDENCIAS</div><h3>FIJAR VERSIONES</h3><p>Usar un <strong>requirements.txt</strong> con versiones probadas, por ejemplo <strong>numpy==1.26.4</strong>.</p></article>
-                    <article class="repro-card reveal"><div class="label">02 / EJECUCIÓN</div><h3>TRABAJAR HEADLESS</h3><p>El procesamiento no debe depender de una pantalla, X11 o una interfaz gráfica.</p></article>
-                    <article class="repro-card reveal"><div class="label">03 / PORTABILIDAD</div><h3>PROBAR EN MÁS DE UNA ARQUITECTURA</h3><p>El mismo algoritmo debe funcionar en Linux <strong>x86_64</strong> y Android <strong>ARM64</strong>.</p></article>
+                    <article class="repro-card reveal"><div class="label">01 / ENTORNO</div><h3>UV + PAQUETES ESTABLES</h3><p><strong>uv</strong> prepara el entorno. En Termux se reutiliza NumPy precompilado para Android.</p></article>
+                    <article class="repro-card reveal"><div class="label">02 / EJECUCIÓN</div><h3>TRABAJAR HEADLESS</h3><p>El procesamiento no depende de una pantalla, X11 o una interfaz gráfica.</p></article>
+                    <article class="repro-card reveal"><div class="label">03 / COMPARACIÓN</div><h3>MISMA ENTRADA, MISMA SALIDA</h3><p>La misma prueba se compara en Linux <strong>x86_64</strong> y Android <strong>ARM64</strong>.</p></article>
                 </div>
                 <div class="page-id">07</div>
             </section>
 
             <!-- Speaker notes: Explicar las cinco fases y señalar que la ilustración sustituye la imagen con el encabezado mal escrito. -->
             <section class="slide canny slide-pad cream-surface">
-                <div class="canny-head"><div><div class="eyebrow reveal">07 / CASO DE ESTUDIO</div><h2 class="section-title reveal">CANNY: FLUJO DE PROCESAMIENTO</h2></div><div class="year reveal">1986</div></div>
+                <div class="canny-head"><div><div class="eyebrow reveal">07 / CASO DE ESTUDIO</div><h2 class="section-title reveal">CANNY: CINCO PASOS PARA ENCONTRAR BORDES</h2></div><div class="year reveal">1986</div></div>
                 <div class="canny-layout">
                     <div class="canny-visual reveal">
                         <div class="visual-label">ANTES / DESPUÉS · ESQUEMA VISUAL</div>
@@ -518,14 +518,14 @@
                             <text x="18" y="278" fill="#F5F0E8" font-family="Inter" font-size="16">IMAGEN DE ENTRADA</text>
                             <text x="448" y="278" fill="#F5F0E8" font-family="Inter" font-size="16">BORDES DETECTADOS</text>
                         </svg>
-                        <p class="visual-caption">Canny conserva los cambios relevantes de intensidad y descarta ruido y bordes débiles aislados.</p>
+                        <p class="visual-caption">Canny no reconoce objetos: marca las líneas donde cambia la intensidad y descarta ruido.</p>
                     </div>
                     <div class="canny-steps">
-                        <article class="canny-step reveal"><div class="step-number">01</div><h3>SUAVIZADO GAUSSIANO</h3><p>Reduce ruido antes de buscar cambios.</p></article>
-                        <article class="canny-step reveal"><div class="step-number">02</div><h3>GRADIENTE DE SOBEL</h3><p>Mide magnitud y dirección de la intensidad.</p></article>
-                        <article class="canny-step reveal"><div class="step-number">03</div><h3>SUPRESIÓN NO MÁXIMOS</h3><p>Afinar los bordes a líneas de un píxel.</p></article>
-                        <article class="canny-step reveal"><div class="step-number">04</div><h3>DOBLE UMBRAL</h3><p>Clasifica píxeles fuertes, débiles o descartados.</p></article>
-                        <article class="canny-step reveal"><div class="step-number">05</div><h3>HISTÉRESIS</h3><p>Conecta un borde débil solo si toca uno fuerte.</p></article>
+                        <article class="canny-step reveal"><div class="step-number">01</div><h3>SUAVIZAR</h3><p>Reduce pequeños cambios y ruido.</p></article>
+                        <article class="canny-step reveal"><div class="step-number">02</div><h3>BUSCAR CAMBIOS</h3><p>Sobel compara píxeles vecinos.</p></article>
+                        <article class="canny-step reveal"><div class="step-number">03</div><h3>ADELGAZAR</h3><p>Conserva la línea más marcada.</p></article>
+                        <article class="canny-step reveal"><div class="step-number">04</div><h3>SEPARAR LO IMPORTANTE</h3><p>Distingue bordes fuertes, posibles y ruido.</p></article>
+                        <article class="canny-step reveal"><div class="step-number">05</div><h3>CONECTAR</h3><p>Conserva posibles bordes unidos a uno fuerte.</p></article>
                     </div>
                 </div>
                 <div class="page-id">08</div>
@@ -540,15 +540,15 @@
                 </div>
                 <div class="demo-right">
                     <div class="eyebrow reveal">CONDICIONES DE PRUEBA</div>
-                    <h2 class="section-title reveal">CANNY EN UN TELÉFONO ANDROID</h2>
+                    <h2 class="section-title reveal">CANNY EN ANDROID CON TERMUX</h2>
                     <div class="demo-conditions">
                         <article class="condition reveal"><div class="label">HARDWARE</div><h3>ARM64 / AARCH64</h3><p>Dispositivo Android sin cambiar el código fuente.</p></article>
-                        <article class="condition reveal"><div class="label">TERMINAL</div><h3>TERMUX CLI</h3><p>Sin interfaz gráfica ni servidores X11.</p></article>
-                        <article class="condition reveal"><div class="label">FLUJO</div><h3>CLONAR → INSTALAR → EJECUTAR</h3><p>Repositorio GitHub, dependencias fijas y modo headless.</p></article>
+                        <article class="condition reveal"><div class="label">ENTORNO</div><h3>TERMUX + UV</h3><p>Entorno preparado con uv y paquetes del sistema.</p></article>
+                        <article class="condition reveal"><div class="label">FLUJO</div><h3>CLONAR → PREPARAR → EJECUTAR</h3><p>Repositorio GitHub, NumPy precompilado y modo headless.</p></article>
                         <article class="condition reveal"><div class="label">IMPLEMENTACIÓN</div><h3>NUMPY + PILLOW</h3><p>Algoritmo modular y liviano, sin OpenCV.</p></article>
                     </div>
                     <div class="success reveal"><strong>ÉXITO:</strong> la salida y la cantidad de píxeles detectados coinciden con la corrida en x86_64.</div>
-                    <p class="demo-note reveal">La pantalla que se verá aquí es la del dispositivo real, no una terminal dibujada en una diapositiva.</p>
+                    <p class="demo-note reveal">Comando de prueba: <strong>python -m canny --test --ascii-preview</strong>. La pantalla será la del dispositivo real.</p>
                 </div>
                 <div class="page-id" style="color:var(--cream);">09</div>
             </section>
@@ -566,7 +566,7 @@
                     <div class="closing-list">
                         <article class="closing-item reveal"><div class="big-number">01</div><div><h3>GIT ES INTEGRIDAD</h3><p>El DAG de commits reemplaza respaldos manuales por un historial auditable.</p></div></article>
                         <article class="closing-item reveal"><div class="big-number">02</div><div><h3>GITHUB ES COLABORACIÓN</h3><p>Git funciona localmente; GitHub añade sincronización, revisión y automatización.</p></div></article>
-                        <article class="closing-item reveal"><div class="big-number">03</div><div><h3>REPRODUCIBILIDAD ES DISEÑO</h3><p>Dependencias fijas y CLI headless permiten llevar Canny de un PC a un teléfono.</p></div></article>
+                        <article class="closing-item reveal"><div class="big-number">03</div><div><h3>REPRODUCIBILIDAD ES DISEÑO</h3><p>Un entorno claro y una CLI headless permiten llevar Canny de un PC a un teléfono.</p></div></article>
                     </div>
                     <div class="questions reveal">PREGUNTAS</div>
                 </div>
@@ -705,3 +705,4 @@
     </script>
 </body>
 </html>
+
